@@ -9,7 +9,7 @@ def validar_telefone(t: str) -> bool:
 def validar_email(e: str) -> bool:
     return " " not in e and "@" in e and "." in e.split("@")[-1]
 
-def exibir_contato(n: str) -> None:
+def exibir_contato(n: str, contatos: dict):
     if n not in contatos:
         print('Contato não encontrado. Tente novamente.')
         return
@@ -57,6 +57,19 @@ def remover_contato():
     else:
         print('Contato não encontrado.')
 
+def busca_parcial(contatos: dict):
+    termo = input('Digite parte do nome, telefone ou email: ').strip().lower()
+    resultados = []
+    for nome, dados in contatos.items():
+        if termo in nome.lower() or termo in dados["telefone"].lower() or termo in dados["email"].lower():
+            resultados.append((nome, dados))
+        else:
+            print('Nenhum resultado encontrado.')
+            return
+        print('Resultados encontrados:')
+        for nome, dados in sorted(resultados, key=lambda x: x[0]):
+            exibir_contato(nome, contatos)
+
 def agenda_atualizada(agenda: dict):
     if not agenda:
         print('Nenhum contato encontrado.')
@@ -74,8 +87,7 @@ while continua in ('s', 'sim'):
     elif opcao == '2':
         remover_contato()
     elif opcao == '3':
-        nome = formatar_nome(input('Digite o nome do contato que deseja consultar: '))
-        exibir_contato(nome)
+        busca_parcial(contatos)
     else:
         print('Opção não encontrada.')
     
