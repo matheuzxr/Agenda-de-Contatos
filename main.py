@@ -63,9 +63,9 @@ def busca_parcial(contatos: dict):
     for nome, dados in contatos.items():
         if termo in nome.lower() or termo in dados["telefone"].lower() or termo in dados["email"].lower():
             resultados.append((nome, dados))
-        else:
-            print('Nenhum resultado encontrado.')
-            return
+    if not resultados:
+        print('Nenhum resultado encontrado.')
+    else:
         print('Resultados encontrados:')
         for nome, dados in sorted(resultados, key=lambda x: x[0]):
             exibir_contato(nome, contatos)
